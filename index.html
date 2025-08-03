@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Sweetheart❤️</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #d6336c;
+      margin-top: 40px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .cake {
+      position: relative;
+      width: 200px;
+      height: 150px;
+      margin: 60px auto;
+      background: #ff6f61;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 10px #d94f4f;
+    }
+
+    .cake::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 30px;
+      background: #fff;
+      border-radius: 10px;
+    }
+
+    .candle {
+      position: absolute;
+      width: 10px;
+      height: 30px;
+      background: #fff;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .flame {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle, yellow 0%, orange 80%);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      animation: flicker 0.1s infinite;
+    }
+
+    @keyframes flicker {
+      0% { transform: scale(1) translateX(-50%); }
+      50% { transform: scale(1.2) translateX(-50%); }
+      100% { transform: scale(1) translateX(-50%); }
+    }
+
+    .buttons {
+      margin-top: 30px;
+    }
+
+    button {
+      background: #d6336c;
+      border: none;
+      padding: 12px 24px;
+      margin: 10px;
+      color: white;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #b02655;
+    }
+
+    .slice {
+      width: 100px;
+      height: 150px;
+      background: #ff9f89;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%) rotate(0deg);
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 10px #d94f4f;
+      display: none;
+    }
+
+    .cut {
+      animation: slice 1.2s forwards;
+    }
+
+    @keyframes slice {
+      0% { transform: translateX(-50%) rotate(0deg); }
+      100% { transform: translateX(100%) rotate(45deg); opacity: 0; }
+    }
+
+    #share-message {
+      font-size: 1.2rem;
+      color: #444;
+      margin-top: 20px;
+    }
+
+    canvas {
+      position: fixed;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="greeting">🎂 Happy Birthday! 🎉</h1>
+  <div class="cake">
+    <div class="candle">
+      <div class="flame" id="flame"></div>
+    </div>
+    <div class="slice" id="slice"></div>
+  </div>
+
+  <div class="buttons">
+    <button onclick="blowCandles()">Blow Candles</button>
+    <button onclick="cutCake()">Cut Cake</button>
+  </div>
+
+  <p id="share-message"></p>
+
+  <!-- Background Music -->
+  <audio id="bg-music" loop autoplay>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+    Your browser does not support the audio tag.
+  </audio>
+
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <canvas id="confetti-canvas"></canvas>
+
+  <script>
+    const flame = document.getElementById('flame');
+    const slice = document.getElementById('slice');
+    const greeting = document.getElementById('greeting');
+    const music = document.getElementById('bg-music');
+
+    // Check for ?name= in URL
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    if (name) {
+      greeting.innerText = `🎉 Happy Birthday, ${decodeURIComponent(name)}! 🎂`;
+      document.getElementById('share-message').innerText =
+        `Share this page: ${window.location.origin + window.location.pathname}?name=${encodeURIComponent(name)}`;
+    }
+
+    function blowCandles() {
+      flame.style.display = 'none';
+      confettiBurst();
+    }
+
+    function cutCake() {
+      slice.style.display = 'block';
+      slice.classList.add('cut');
+      confettiBurst();
+    }
+
+    function confettiBurst() {
+      confetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.5 }
+      });
+    }
+
+    // Start music on click (autoplay restrictions on some browsers)
+    window.addEventListener('click', () => {
+      music.play().catch(() => {});
+    });
+  </script>
+
+</body>
+</html>
